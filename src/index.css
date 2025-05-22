@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles */
+.calendar-day {
+  min-height: 120px;
+}
+
+.event-item {
+  transition: all 0.2s ease;
+}
+
+.event-item:hover {
+  transform: scale(1.02);
+}
