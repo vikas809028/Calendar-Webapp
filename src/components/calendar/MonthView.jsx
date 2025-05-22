@@ -1,12 +1,12 @@
-import { useState } from 'react';
-import { isSameDay, format } from 'date-fns';
-import Event from './Event';
-import {FiClock, FiX } from 'react-icons/fi';
-import clsx from 'clsx';
+import { useState } from "react";
+import { isSameDay, format } from "date-fns";
+import Event from "./Event";
+import { FiClock, FiX } from "react-icons/fi";
+import clsx from "clsx";
 
-const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function MonthView({ days, events}) {
+export default function MonthView({ days, events }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState([]);
@@ -26,46 +26,54 @@ export default function MonthView({ days, events}) {
     setSelectedEvent(null);
   };
 
-
   return (
     <>
       <div className="grid grid-cols-7 gap-px bg-gray-200 border border-gray-300 rounded-lg overflow-hidden">
         {/* Weekday headers */}
-        {weekDays.map(day => (
-          <div key={day} className="bg-gray-100 p-2 text-center font-medium text-gray-700">
+        {weekDays.map((day) => (
+          <div
+            key={day}
+            className="bg-gray-100 p-2 text-center font-medium text-gray-700"
+          >
             {day}
           </div>
         ))}
 
-        {days.map(day => {
-          const dayEvents = events.filter(event => isSameDay(event.date, day));
+        {days.map((day) => {
+          const dayEvents = events.filter((event) =>
+            isSameDay(event.date, day)
+          );
           const first = dayEvents[0];
           const maxVisibleEvents = 1;
           const hasOverflow = dayEvents.length > maxVisibleEvents;
 
           return (
             <div
-              key={day.toString()}
-              className={clsx(
-  'relative bg-white p-1 min-h-24',
-  isSameDay(day, new Date()) && 'bg-blue-100'
-)}
+               key={day.toString()}
+  className="relative bg-white p-1 min-h-24"
+  style={{
+    backgroundColor: isSameDay(day, new Date()) ? "#DBEAFE" : "white", // Tailwind's bg-blue-100
+  }}
             >
-              <div className={`text-center p-1 ${isSameDay(day, new Date()) ? ' font-bold' : 'text-gray-700'}`}>
-                {format(day, 'd')}
+              <div
+                className={`text-center p-1 ${
+                  isSameDay(day, new Date()) ? " font-bold" : "text-gray-700"
+                }`}
+              >
+                {format(day, "d")}
               </div>
 
               <div className="space-y-1 max-h-20 overflow-y-auto mt-1">
-                {dayEvents.slice(0, maxVisibleEvents).map(event => (
-                  <div 
-                    key={event.id} 
+                {dayEvents.slice(0, maxVisibleEvents).map((event) => (
+                  <div
+                    key={event.id}
                     onClick={() => handleViewDetails(event)}
                     className="cursor-pointer"
                   >
                     <Event event={event} />
                   </div>
                 ))}
-                
+
                 {hasOverflow && (
                   <button
                     onClick={() => handleShowMore(day, dayEvents)}
@@ -77,7 +85,10 @@ export default function MonthView({ days, events}) {
               </div>
 
               {first && (
-                <span className="absolute left-0 top-0 bottom-0 w-1 rounded-r" style={{ backgroundColor: first.color }} />
+                <span
+                  className="absolute left-0 top-0 bottom-0 w-1 rounded-r"
+                  style={{ backgroundColor: first.color }}
+                />
               )}
             </div>
           );
@@ -90,7 +101,7 @@ export default function MonthView({ days, events}) {
           <div className="bg-white rounded-lg p-6 w-96 max-h-[80vh] overflow-y-auto">
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-semibold">
-                {format(selectedDay, 'EEEE, d MMMM')}
+                {format(selectedDay, "EEEE, d MMMM")}
               </h3>
               <button
                 onClick={() => setShowModal(false)}
@@ -100,23 +111,25 @@ export default function MonthView({ days, events}) {
               </button>
             </div>
             <div className="space-y-3">
-              {selectedEvents.map(event => (
-                <div 
-                  key={event.id} 
+              {selectedEvents.map((event) => (
+                <div
+                  key={event.id}
                   className="p-3 border rounded-lg hover:bg-gray-50 cursor-pointer"
                   onClick={() => handleViewDetails(event)}
                 >
                   <div className="flex justify-between items-start">
                     <div>
-                      <div className="font-medium">{event.title || '(No title)'}</div>
+                      <div className="font-medium">
+                        {event.title || "(No title)"}
+                      </div>
                       {event.startTime && (
                         <div className="text-sm text-gray-600 mt-1 flex items-center">
                           <FiClock className="mr-1" />
-                          {event.startTime} {event.endTime && `- ${event.endTime}`}
+                          {event.startTime}{" "}
+                          {event.endTime && `- ${event.endTime}`}
                         </div>
                       )}
                     </div>
-                
                   </div>
                 </div>
               ))}
@@ -138,28 +151,34 @@ export default function MonthView({ days, events}) {
                 <FiX size={24} />
               </button>
             </div>
-            
+
             <div className="mb-4">
-              <div className="text-xl font-bold mb-2">{selectedEvent.title || '(No title)'}</div>
-              
+              <div className="text-xl font-bold mb-2">
+                {selectedEvent.title || "(No title)"}
+              </div>
+
               <div className="flex items-center text-gray-600 mb-2">
                 <FiClock className="mr-2" />
                 <div>
-                  {format(selectedEvent.date, 'EEEE, d MMMM')}
+                  {format(selectedEvent.date, "EEEE, d MMMM")}
                   {selectedEvent.startTime && (
                     <span>
-                      {' · '}
-                      {selectedEvent.startTime} 
+                      {" · "}
+                      {selectedEvent.startTime}
                       {selectedEvent.endTime && ` - ${selectedEvent.endTime}`}
                     </span>
                   )}
                 </div>
               </div>
-              
+
               {selectedEvent.description && (
                 <div className="mt-4">
-                  <div className="text-sm font-medium text-gray-500 mb-1">Description</div>
-                  <div className="text-gray-700">{selectedEvent.description}</div>
+                  <div className="text-sm font-medium text-gray-500 mb-1">
+                    Description
+                  </div>
+                  <div className="text-gray-700">
+                    {selectedEvent.description}
+                  </div>
                 </div>
               )}
             </div>
