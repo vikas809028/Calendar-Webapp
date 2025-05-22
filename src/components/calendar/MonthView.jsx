@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { isSameDay, format } from 'date-fns';
 import Event from './Event';
 import {FiClock, FiX } from 'react-icons/fi';
+import clsx from 'clsx';
 
 const weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
@@ -45,7 +46,10 @@ export default function MonthView({ days, events}) {
           return (
             <div
               key={day.toString()}
-              className={`relative bg-white p-1 min-h-24 ${isSameDay(day, new Date()) ? 'bg-blue-100' : ''}`}
+              className={clsx(
+  'relative bg-white p-1 min-h-24',
+  isSameDay(day, new Date()) && 'bg-blue-100'
+)}
             >
               <div className={`text-center p-1 ${isSameDay(day, new Date()) ? ' font-bold' : 'text-gray-700'}`}>
                 {format(day, 'd')}
