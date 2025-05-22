@@ -21,7 +21,7 @@ A clean and responsive calendar application built with **React**, **Tailwind CSS
 ## 🚀 Getting Started
 
 ```bash
-git clone https://github.com/your-username/calendar-app.git
+git clone https://github.com/vikas809028/calendar-app.git
 cd calendar-app
 npm install
 npm run dev
