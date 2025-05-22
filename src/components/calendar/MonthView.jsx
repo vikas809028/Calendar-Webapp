@@ -45,8 +45,7 @@ export default function MonthView({ days, events}) {
           return (
             <div
               key={day.toString()}
-              className={`relative bg-white p-1 min-h-24  ${isSameDay(day, new Date()) && ' bg-blue-100'}`}
-              style={first ? { backgroundColor: `${first.color}20` } : {}}
+              className={`relative bg-white p-1 min-h-24 ${isSameDay(day, new Date()) ? 'bg-blue-100' : ''}`}
             >
               <div className={`text-center p-1 ${isSameDay(day, new Date()) ? ' font-bold' : 'text-gray-700'}`}>
                 {format(day, 'd')}
