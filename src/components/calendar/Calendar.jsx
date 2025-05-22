@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   format,
   startOfMonth,
@@ -7,37 +7,39 @@ import {
   addMonths,
   subMonths,
   parseISO,
-} from 'date-fns';
-import MonthView from './MonthView';
-import AddEventModal from './AddEventModal';
-import { FiChevronLeft, FiChevronRight, FiPlus } from 'react-icons/fi';
-import { MdToday } from 'react-icons/md';
+} from "date-fns";
+import MonthView from "./MonthView";
+import AddEventModal from "./AddEventModal";
+import { FiChevronLeft, FiChevronRight, FiPlus } from "react-icons/fi";
+import { MdToday } from "react-icons/md";
 
-import initialEvents from '../../data/events';
+import initialEvents from "../../data/events";
 
 export default function Calendar() {
   const [events, setEvents] = useState(
-    initialEvents.map(e => ({ ...e, date: parseISO(e.date) }))
+    initialEvents.map((e) => ({ ...e, date: parseISO(e.date) }))
   );
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showModal, setShowModal] = useState(false);
   const [showDatePicker, setShowDatePicker] = useState(false);
-  const [yearInput, setYearInput] = useState(format(currentDate, 'yyyy'));
-  const [monthInput, setMonthInput] = useState(format(currentDate, 'MM'));
+  const [yearInput, setYearInput] = useState(format(currentDate, "yyyy"));
+  const [monthInput, setMonthInput] = useState(format(currentDate, "MM"));
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
   const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd });
 
-  const navigateMonth = dir => {
-    setCurrentDate(dir === 'next' ? addMonths(currentDate, 1) : subMonths(currentDate, 1));
+  const navigateMonth = (dir) => {
+    setCurrentDate(
+      dir === "next" ? addMonths(currentDate, 1) : subMonths(currentDate, 1)
+    );
   };
 
   const goToToday = () => {
     const today = new Date();
     setCurrentDate(today);
-    setYearInput(format(today, 'yyyy'));
-    setMonthInput(format(today, 'MM'));
+    setYearInput(format(today, "yyyy"));
+    setMonthInput(format(today, "MM"));
   };
 
   const handleDateSubmit = (e) => {
@@ -49,19 +51,22 @@ export default function Calendar() {
     }
   };
 
-  const handleAddEvent = newEvent => {
-    setEvents(prev => [
+  const handleAddEvent = (newEvent) => {
+    setEvents((prev) => [
       ...prev,
       {
         ...newEvent,
         id: Date.now(),
-        date: parseISO(newEvent.date)
-      }
+        date: parseISO(newEvent.date),
+      },
     ]);
   };
 
   return (
     <div className="max-w-5xl mx-auto p-6 bg-white rounded-xl shadow-lg">
+      <h1 className="text-center my-1 font-bold text-3xl bg-gradient-to-r from-blue-500 to-teal-500 text-transparent bg-clip-text">
+        CALENDAR
+      </h1>
       {/* toolbar */}
       <div className="mb-6 flex items-center justify-between flex-wrap gap-4">
         <div className="flex items-center space-x-4">
@@ -72,10 +77,10 @@ export default function Calendar() {
             <MdToday className="text-blue-500" />
             <span>Today</span>
           </button>
-          
+
           <div className="flex items-center">
             <button
-              onClick={() => navigateMonth('prev')}
+              onClick={() => navigateMonth("prev")}
               className="p-2 rounded-full hover:bg-gray-100 text-gray-700"
             >
               <FiChevronLeft />
@@ -84,17 +89,17 @@ export default function Calendar() {
               onClick={() => setShowDatePicker(!showDatePicker)}
               className="mx-1 px-3 py-1 text-lg font-semibold text-gray-800 hover:bg-gray-100 rounded-lg"
             >
-              {format(currentDate, 'MMMM yyyy')}
+              {format(currentDate, "MMMM yyyy")}
             </button>
             <button
-              onClick={() => navigateMonth('next')}
+              onClick={() => navigateMonth("next")}
               className="p-2 rounded-full hover:bg-gray-100 text-gray-700"
             >
               <FiChevronRight />
             </button>
           </div>
         </div>
-        
+
         <button
           onClick={() => setShowModal(true)}
           className="flex items-center space-x-1 px-4 py-2 bg-blue-500 rounded-lg text-sm font-medium text-white hover:bg-blue-600"
@@ -116,10 +121,10 @@ export default function Calendar() {
                 className="border rounded p-2"
               >
                 {Array.from({ length: 12 }, (_, i) => {
-                  const monthNum = (i + 1).toString().padStart(2, '0');
+                  const monthNum = (i + 1).toString().padStart(2, "0");
                   return (
                     <option key={monthNum} value={monthNum}>
-                      {format(new Date(2000, i, 1), 'MMMM')}
+                      {format(new Date(2000, i, 1), "MMMM")}
                     </option>
                   );
                 })}

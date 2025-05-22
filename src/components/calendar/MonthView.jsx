@@ -66,7 +66,7 @@ export default function MonthView({ days, events}) {
                 {hasOverflow && (
                   <button
                     onClick={() => handleShowMore(day, dayEvents)}
-                    className="text-xs p-1 text-blue-500 hover:underline w-full text-left"
+                    className="text-xs px-2 text-blue-500 hover:underline w-full text-left"
                   >
                     {dayEvents.length - maxVisibleEvents} more
                   </button>
