@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { isSameDay, format } from "date-fns";
+import { isSameDay, format, isSameMonth } from "date-fns";
 import Event from "./Event";
 import { FiClock, FiX } from "react-icons/fi";
 
 const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
-export default function MonthView({ days, events }) {
+export default function MonthView({ days, events, currentDate }) {
   const [showModal, setShowModal] = useState(false);
   const [selectedDay, setSelectedDay] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState([]);
@@ -27,38 +27,59 @@ export default function MonthView({ days, events }) {
 
   return (
     <>
-      <div className="grid grid-cols-7 gap-px bg-gray-200 border border-gray-300 rounded-lg overflow-hidden">
+      <div className="grid grid-cols-7 gap-0 border border-gray-300 rounded-lg overflow-hidden">
         {/* Weekday headers */}
         {weekDays.map((day) => (
           <div
             key={day}
-            className="bg-gray-100 p-2 text-center font-medium text-gray-700"
+            className="bg-gray-300 border border-gray-400 p-2 text-center font-medium text-gray-700"
           >
             {day}
           </div>
         ))}
 
-        {days.map((day) => {
+        {days.map((day, idx) => {
+          if (!day) {
+            return (
+              <div
+                key={idx}
+                className="bg-white border border-gray-300 p-1 min-h-24"
+              />
+            );
+          }
+
           const dayEvents = events.filter((event) =>
             isSameDay(event.date, day)
           );
+
           const first = dayEvents[0];
           const maxVisibleEvents = 1;
           const hasOverflow = dayEvents.length > maxVisibleEvents;
-
+          const isInCurrentMonth = isSameMonth(day, currentDate);
           return (
             <div
               key={day.toString()}
-              className="relative bg-white p-1 min-h-24"
-              style={first ? { backgroundColor: `${first.color}20` } : {}}
+              className={`relative border border-gray-300 p-1 min-h-24 ${
+                isInCurrentMonth
+                  ? "bg-white text-gray-800"
+                  : "bg-gray-100 text-gray-300"
+              }`}
             >
               <div
                 className={`text-center p-1 ${
-                  isSameDay(day, new Date()) ? " font-bold" : "text-gray-700"
+                  isSameDay(day, new Date()) ? "font-bold" : "text-gray-700"
                 }`}
-              >{isSameDay(day, new Date()) ? <span className="text-white p-2 rounded-full" style={{ backgroundColor: "#3B82F6" }}>{format(day, "d")}</span>
-: format(day, "d")}
-                
+              >
+                {isSameDay(day, new Date()) ? (
+                  <span
+                    className="text-white p-2 rounded-full"
+                    style={{ backgroundColor: "#3B82F6" }}
+                  >
+                    {format(day, "d")}
+                  </span>
+                ) : (
+                  format(day, "d")
+                )}
               </div>
 
               <div className="space-y-1 max-h-20 overflow-y-auto mt-1">

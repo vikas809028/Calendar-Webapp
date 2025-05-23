@@ -12,7 +12,7 @@ import MonthView from "./MonthView";
 import AddEventModal from "./AddEventModal";
 import { FiChevronLeft, FiChevronRight, FiPlus } from "react-icons/fi";
 import { MdToday } from "react-icons/md";
-
+import { startOfWeek, endOfWeek } from "date-fns";
 import initialEvents from "../../data/events";
 
 export default function Calendar() {
@@ -27,7 +27,13 @@ export default function Calendar() {
 
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
-  const monthDays = eachDayOfInterval({ start: monthStart, end: monthEnd });
+
+  const calendarStart = startOfWeek(monthStart);
+  const calendarEnd = endOfWeek(monthEnd);
+  const calendarDays = eachDayOfInterval({
+    start: calendarStart,
+    end: calendarEnd,
+  });
 
   const navigateMonth = (dir) => {
     setCurrentDate(
@@ -152,7 +158,11 @@ export default function Calendar() {
       )}
 
       {/* month grid */}
-      <MonthView days={monthDays} events={events} currentDate={currentDate} />
+      <MonthView
+        days={calendarDays}
+        events={events}
+        currentDate={currentDate}
+      />
 
       {showModal && (
         <AddEventModal
